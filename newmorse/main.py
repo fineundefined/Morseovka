@@ -4,7 +4,7 @@ from GetFile import *
 from TeamName import *
 import telebot
 
-bot = telebot.TeleBot('5614828416:AAF4WNZqZf1_BRqmDPFQIwye5CEft5a0MPY')
+bot = telebot.TeleBot('')
 
 if __name__ == "__main__":
     os.system("title Morseovka")
