@@ -5,7 +5,7 @@ from TeamName import *
 import telebot
 
 #set bot token
-bot = telebot.TeleBot('5696255478:AAFOUU4s1jost8eK31jyzZv4BkdZDZBJ-Wc')
+bot = telebot.TeleBot('TOKEN')
 
 #main function start
 if __name__ == "__main__":
