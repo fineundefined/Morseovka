@@ -1,5 +1,6 @@
 class Morse:
 
+
     def decodeMorse(morseCode, dot='.', dash='-'):
         morse_code = {dot + dash + dot * 3: "&", dash * 2 + dot * 2 + dash * 2: ",", dot * 4 + dash: "4", dot * 5: "5",
                       dot * 5: "5", dot * 3 + dash * 3 + dot * 3: "SOS", dash + dot * 3: "B",
