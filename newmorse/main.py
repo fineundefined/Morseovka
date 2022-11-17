@@ -4,7 +4,7 @@ import telebot
 
 
 """set bot token"""
-bot = telebot.TeleBot('5696255478:AAEAwdmjdxRk1vpslUZmEp2I3QhcRRlOK50')
+bot = telebot.TeleBot('')
 
 """main function start"""
 if __name__ == "__main__":
@@ -99,8 +99,7 @@ def get_text_messages(message):
                   dot * 3 + dash + dot * 2 + dash: "$", dot + dash * 3: "J",
                   dash * 5: "0", dash * 4 + dot: "9",
                   dot + dash + dot * 2 + dash + dot: '"',
-                  dash + dot + dash * 2 + dot: "(",
-                  dash * 3 + dot * 2: "8",
+                  dash + dot + dash * 2 + dot: "(", dash * 3 + dot * 2: "8",
                   dot * 3 + dash * 2: "3", }
 
     """writing logs to the console"""
