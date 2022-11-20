@@ -114,7 +114,7 @@ def get_text_messages(message):
         then we use the method of sending a message
         in which we use the morse method
         to encode or decode the message"""
-        match first_command:
+        match first_command: # noqa
             case "/decode":
                 user_input = ' '.join(user_input)
 
