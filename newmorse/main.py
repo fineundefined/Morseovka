@@ -25,20 +25,20 @@ bot.set_my_commands([
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     """Add message text to variable."""
-    user_Input = message.text
+    user_input = message.text
 
     """create a list from the text of the
     message with the separator " " with maximum separation 1"""
-    user_Input = user_Input.split(" ", 1)
+    user_input = user_input.split(" ", 1)
 
     """add the first command to the variable"""
-    fisrt_command = user_Input[0]
+    first_command = user_input[0]
 
     """remove the first command from the list"""
-    del user_Input[0]
+    del user_input[0]
 
     """create a string from a list"""
-    user_Input = ''.join(user_Input)
+    user_input = ''.join(user_input)
 
     """set the default dot value(then I'll change it)"""
     dot = '.'
@@ -50,10 +50,10 @@ def get_text_messages(message):
     and set the values of the dot and dash
     to those that the user sent in the message"""
     try:
-        user_Input = user_Input.split(' /', 2)
-        dot = user_Input[1]
-        dash = user_Input[2]
-        del user_Input[1:3]
+        user_input = user_input.split(' /', 2)
+        dot = user_input[1]
+        dash = user_input[2]
+        del user_input[1:3]
 
         """if there were no values in the message,
         then skip this step"""
@@ -99,8 +99,7 @@ def get_text_messages(message):
                   dot * 3 + dash + dot * 2 + dash: "$", dot + dash * 3: "J",
                   dash * 5: "0", dash * 4 + dot: "9",
                   dot + dash + dot * 2 + dash + dot: '"',
-                  dash + dot + dash * 2 + dot: "(",
-                  dash * 3 + dot * 2: "8",
+                  dash + dot + dash * 2 + dot: "(", dash * 3 + dot * 2: "8",
                   dot * 3 + dash * 2: "3", }
 
     """writing logs to the console"""
@@ -109,25 +108,25 @@ def get_text_messages(message):
 
     """check if the user wrote something
     other than the first command"""
-    if user_Input[0] != "":
+    if user_input[0] != "":
 
         """check which command the user used.
         then we use the method of sending a message
         in which we use the morse method
         to encode or decode the message"""
-        match fisrt_command:
+        match first_command:
             case "/decode":
-                user_Input = ' '.join(user_Input)
+                user_input = ' '.join(user_input)
 
                 print("decoding from morse code\n")
                 bot.send_message(message.from_user.id,
-                                 Morse.decodeMorse(user_Input, morse_code))
+                                 Morse.decodeMorse(user_input, morse_code))
             case "/encode":
-                user_Input = ' '.join(user_Input)
+                user_input = ' '.join(user_input)
 
                 print("encoding from morse code\n")
                 bot.send_message(message.from_user.id,
-                                 Morse.encodeMorse(user_Input, morse_code))
+                                 Morse.encodeMorse(user_input, morse_code))
 
             case _:
                 bot.send_message(message.from_user.id, "Command is incorrect")

@@ -18,7 +18,6 @@ class Morse:
         output = "".join(output)
         return output.lower()
 
-
     def encodeMorse(toEncode, morse_code):
 
         morse_code_inverted = {v: k for k, v in morse_code.items()}
