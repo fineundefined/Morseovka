@@ -2,7 +2,7 @@ class Morse:
 
     def decodeMorse(morseCode, morse_code):
 
-        morseCodeDict = morseCode.split(" ")
+        morseCodeDict = morseCode.split("YOURBOTTOKEN")
 
         output = []
 
