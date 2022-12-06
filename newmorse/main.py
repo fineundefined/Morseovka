@@ -4,7 +4,7 @@ import telebot
 
 
 """set bot token"""
-bot = telebot.TeleBot('')
+bot = telebot.TeleBot('YOURBOTTOKEN')
 
 """main function start"""
 if __name__ == "__main__":
