@@ -1,21 +1,34 @@
+"""
+This is main file.
+
+This is where message processing takes place,
+encoding and decoding functions are called,
+and messages are sent.
+"""
 import os
 from Morse import Morse
 import telebot
-
+from audiomorse import morse_to_wav
+import random
 
 """set bot token"""
-bot = telebot.TeleBot('YOURBOTTOKEN')
+bot = telebot.TeleBot('')
 
 """main function start"""
 if __name__ == "__main__":
+    m = Morse()
     """set console name"""
     os.system("title Morseovka")
-    """set console size"""
-    os.system("mode con cols=101 lines=30")
+
 """set the list of bot commands"""
 bot.set_my_commands([
-    telebot.types.BotCommand("/encode", "'/encode + text'"),
-    telebot.types.BotCommand("/decode", "/decode + morse code")
+    telebot.types.BotCommand("/help",
+                             "/help to get commands list"),
+    telebot.types.BotCommand("/encode",
+                             "/encode + text + &%dot% -&%dash% — (optional)"),
+    telebot.types.BotCommand("/decode",
+                             "/decode + morse code + "
+                             "-&%dot% -&%dash% — (optional)")
 ])
 
 
@@ -24,117 +37,134 @@ bot.set_my_commands([
 
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
+    """
+    Adadadad.
+
+    adadadasd
+    dadada
+    """
+    print(message.from_user.id)
     """Add message text to variable."""
     user_input = message.text
-
     """create a list from the text of the
     message with the separator " " with maximum separation 1"""
     user_input = user_input.split(" ", 1)
 
     """add the first command to the variable"""
     first_command = user_input[0]
-
     """remove the first command from the list"""
     del user_input[0]
 
     """create a string from a list"""
     user_input = ''.join(user_input)
 
-    """set the default dot value(then I'll change it)"""
-    dot = '.'
-
-    """set the default dash value"""
-    dash = '-'
-
     """we are trying to split the string again
     and set the values of the dot and dash
     to those that the user sent in the message"""
-    try:
-        user_input = user_input.split(' /', 2)
+
+    user_input = user_input.split(' &', 2)
+    if len(user_input) == 3:
         dot = user_input[1]
         dash = user_input[2]
+        m.set_morse(dot, dash)
         del user_input[1:3]
-
-        """if there were no values in the message,
-        then skip this step"""
-    except IndexError:
-        pass
-
-    """Morse code list"""
-    morse_code = {dot + dash + dot * 3: "&",
-                  dash * 2 + dot * 2 + dash * 2: ",",
-                  dot * 4 + dash: "4", dot * 5: "5",
-                  dot * 5: "5",
-                  dot * 3 + dash * 3 + dot * 3: "SOS",
-                  dash + dot * 3: "B",
-                  dash + dot * 2 + dash: "X",
-                  dot + dash + dot: "R",
-                  dot + dash * 2: "W",
-                  dot * 2 + dash * 3: "2",
-                  dot + dash: "A",
-                  dot * 2: "I",
-                  dot * 2 + dash + dot: "F",
-                  dot: "E", dot + dash + dot * 2: "L",
-                  dot * 3: "S", dot * 2 + dash: "U",
-                  dot * 2 + dash * 2 + dot * 2: "?",
-                  dot + dash * 4: "1", dash + dot + dash: "K",
-                  dash + dot + dot: "D",
-                  dash + dot * 4: "6", dash + dot * 3 + dash: "=",
-                  dash * 3: "O", dot + dash * 2 + dot: "P",
-                  dot + dash + dot + dash + dot + dash: ".",
-                  dash * 2: "M", dash + dot: "N", dot * 4: "H",
-                  dot + dash * 4 + dot: "'", dot * 3 + dash: "V",
-                  dash * 2 + dot * 3: "7",
-                  dash + dot + dash + dot + dash + dot: ";",
-                  dash + dot * 4 + dash: "-",
-                  dot * 2 + dash * 2 + dot + dash: "_",
-                  dash + dot + dash * 2 + dot + dash: ")",
-                  dash + dot + dash + dot + dash * 2: "!",
-                  dash * 2 + dot: "G", dash * 2 + dot + dash: "Q",
-                  dash * 2 + dot * 2: "Z", dash + dot * 2 + dash + dot: "/",
-                  dot + dash + dot + dash + dot: "+",
-                  dash + dot + dash + dot: "C", dash * 3 + dot * 3: ":",
-                  dash + dot + dash * 2: "Y", dash: "T",
-                  dot + dash * 2 + dot + dash + dot: "@",
-                  dot * 3 + dash + dot * 2 + dash: "$", dot + dash * 3: "J",
-                  dash * 5: "0", dash * 4 + dot: "9",
-                  dot + dash + dot * 2 + dash + dot: '"',
-                  dash + dot + dash * 2 + dot: "(", dash * 3 + dot * 2: "8",
-                  dot * 3 + dash * 2: "3", }
+    else:
+        m.set_morse()
 
     """writing logs to the console"""
     print(message.from_user.first_name,
           "[", message.from_user.id, "]:", message.text)
-
     """check if the user wrote something
     other than the first command"""
     if user_input[0] != "":
-
+        user_input = ' '.join(user_input)
         """check which command the user used.
         then we use the method of sending a message
         in which we use the morse method
         to encode or decode the message"""
         match first_command:
             case "/decode":
-                user_input = ' '.join(user_input)
 
-                print("decoding from morse code\n")
-                bot.send_message(message.from_user.id,
-                                 Morse.decodeMorse(user_input, morse_code))
+                try:
+                    bot.send_message(message.from_user.id,
+                                     Morse.decodeMorse(user_input,
+                                                       m.morse_code))
+
+                    print("decoded from morse code\n")
+
+                except:  # noqa: E722
+                    bot.send_message(message.from_user.id,
+                                     "ERROR")
+                    raise ("ERROR")
+
             case "/encode":
-                user_input = ' '.join(user_input)
+                try:
+                    bot.send_message(message.from_user.id,
+                                     Morse.encodeMorse(user_input,
+                                                       m.morse_code))
 
-                print("encoding from morse code\n")
-                bot.send_message(message.from_user.id,
-                                 Morse.encodeMorse(user_input, morse_code))
+                    print("encoded from morse code\n")
+
+                except:  # noqa: E722
+                    bot.send_message(message.from_user.id,
+                                     "ERROR")
+                    raise ("ERROR")
+
+            case "/eaudio":
+                if len(user_input) <= 30:
+                    print("encoded from morse code\n")
+                    rn = random.randrange(0, 100)
+                    print(rn)
+                    newpath = "C:\\Users\\A\\PycharmProjects" \
+                              "\\telebotPY\\newfile",\
+                              str(rn), ".mp3"
+                    pathjoin = ''.join(newpath)
+                    newfile = open(pathjoin, 'x')
+                    newfile.close()
+
+                    morse_to_wav(Morse.encodeMorse(user_input,
+                                                   m.morse_code), pathjoin)
+
+                    bot.send_audio(message.from_user.id,
+                                   open(pathjoin, 'rb'),
+                                   title="Morse",
+                                   caption="@morseovka_bot")
+                    os.remove(pathjoin)
+                else:
+                    bot.send_message(message.from_user.id,
+                                     "Message must be less then 20 symbols")
 
             case _:
-                bot.send_message(message.from_user.id, "Command is incorrect")
+                bot.send_message(message.from_user.id,
+                                 "There is no command in the message."
+                                 " Write /help to get commands list")
 
-        """tell the user to fuck off because he's a moron"""
-    else:
-        bot.send_message(message.from_user.id,
-                         "You cannot encode or decode nothing")
+    elif user_input[0] == "":
+        """if there is no text in the message and
+        the first command matches the list,
+        send the message"""
+        if first_command in ["/help", "/start"]:
+            bot.send_message(message.from_user.id,
+                             '/decode + "text '
+                             'to decode from format "-.-." or'
+                             ' use parameters '
+                             'to change value of dot and dash symbol"'
+                             ' &dot parameter &dash parameter \n'
+                             '/encode + "text '
+                             'to encode to format "-.-." or'
+                             ' use parameters '
+                             'to change value of dot and dash symbol"'
+                             ' &dot parameter &dash parameter')
+        elif first_command in ["/decode", "/encode"]:
+            bot.send_message(message.from_user.id, "decode/encode + "
+                                                   "text + dotParam + "
+                                                   "dashParam(Parameters "
+                                                   "should start with '&')")
+        else:
+            bot.send_message(message.from_user.id, "There is no "
+                                                   "command in the message."
+                                                   " Write /help "
+                                                   "to get commands list")
 
 
 """we endlessly send requests to the server
