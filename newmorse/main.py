@@ -38,10 +38,7 @@ bot.set_my_commands([
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     """
-    Adadadad.
-
-    adadadasd
-    dadada
+    This function captures the user's messages. Processes them and sends a response.
     """
     print(message.from_user.id)
     """Add message text to variable."""
