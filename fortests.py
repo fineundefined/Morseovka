@@ -136,4 +136,3 @@ def test_send():
     assert bot_send(newlist, 496068383, time.time())
 
 
-bot.polling()

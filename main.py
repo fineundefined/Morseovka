@@ -168,4 +168,4 @@ def get_text_messages(message):
 """we endlessly send requests to the server
 to check if the user has written something to us"""
 
-bot.polling(none_stop=True, interval=0)
+
