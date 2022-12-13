@@ -1,3 +1,4 @@
+
 """
 Audiomorse file.
 
@@ -48,5 +49,6 @@ def morse_to_wav(text, pathjoin):
 
             case ' ':
                 write_signal(wav, 0.6, volume=0)
+            case '/':
+                write_signal(wav, 0.6, volume=0)
     wav.close()
-    
