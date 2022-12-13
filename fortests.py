@@ -134,5 +134,3 @@ def test_send():
                'qqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                'hi there']
     assert bot_send(newlist, 496068383, time.time())
-
-
