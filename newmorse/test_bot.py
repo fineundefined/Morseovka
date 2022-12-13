@@ -1,14 +1,27 @@
+"""
+Tests file.
+
+This file is for testing the bot
+"""
+
+
 import telebot
 from Morse import Morse
 import time
 
-bot = telebot.TeleBot('BOT_TOKEN')
+bot = telebot.TeleBot('5696255478:AAGgWcy9eTxCeqf3llY6JSWxwEuDRje1LiE')
 
 
 @bot.message_handler(commands=['test'])
 def get_command(message):
+    """
+    Got message, send reply.
+
+    In this function we receive a message,
+    process it and send a response to the user
+    """
     start_time = time.time()
-    user_id = CHAT_ID
+    user_id = 496068383
     if message.from_user.id == user_id:
         user_input = message.text
         user_input = user_input.split(' /')
@@ -23,11 +36,25 @@ def get_command(message):
 
 @bot.message_handler(commands=['auto'])
 def autotest(message):
-    if message.from_user.id == CHAT_ID:
+    """
+    Got command, send reply.
+
+    This function is triggered
+    if the user writes the command "/auto".
+    It checks his ID and sends a reply
+    """
+    if message.from_user.id == 496068383:
         test_send()
 
 
 def bot_send(user_input, user_id, start_time):
+    """
+    Got parameters, create a tests.
+
+    This function tests the receipt
+    sending and processing
+    of the message by the class Morse
+    """
     m = Morse()
     success = u'\U00002705'
     failed = u'\U0000274C'
@@ -50,7 +77,8 @@ def bot_send(user_input, user_id, start_time):
                          f' SUCCESS  with decoding and encoding \nGOT' \
                          f' "{i}"\nencoded to' \
                          f' "{encoded}"\nafter decoding back GOT:' \
-                         f' "{decoded}" \n\n"{decoded}" {row} "{i}" \n{"=" * 25}'
+                         f' "{decoded}"' \
+                         f' \n\n"{decoded}" {row} "{i}" \n{"=" * 25}'
                 total_success_tests += 1
             elif decoded is None or decoded == ' ':
                 answer = f'{"=" * 25}\n{failed} TEST[{n}]: Connot read this' \
@@ -61,7 +89,8 @@ def bot_send(user_input, user_id, start_time):
                          f' FAILED with decoding or encoding \nGOT' \
                          f' "{i}"\nencoded to' \
                          f' "{encoded}"\nafter decoding back GOT:' \
-                         f' "{decoded}" \n\n"{decoded}" {doublemark} "{i}" \n{"=" * 25}'
+                         f' "{decoded}"' \
+                         f' \n\n"{decoded}" {doublemark} "{i}" \n{"=" * 25}'
                 failed_tests.append(f'TEST[{n}]')
             success_list.append(answer)
 
@@ -91,13 +120,20 @@ def bot_send(user_input, user_id, start_time):
 
 
 def test_send():
+    """
+    Automatic test.
+
+    This function uses the pytest.
+    tests the bot automatically with
+    a special list after it has finished
+    """
     newlist = ['newtest',
                '     ',
                '123',
                '/""[][][//??>.<@#%^&**()+_=!',
                'qqqqqqqqqqqqqqqqqqqqqqqqqqqqq',
                'hi there']
-    assert bot_send(newlist, CHAT_ID, time.time())
+    assert bot_send(newlist, 496068383, time.time())
 
 
 bot.polling()
