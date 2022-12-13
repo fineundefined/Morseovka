@@ -92,7 +92,7 @@ class Morse:
             try:
                 output.append(morse_code[morse])
             except KeyError:
-                if morse == "":
+                if morse == "/" or morse == "":
                     output.append(" ")
                 else:
                     pass
@@ -133,7 +133,8 @@ class Morse:
                 output.append(morse_code_inverted[char.upper()])
             except KeyError:
                 if char == " ":
-                    output.append(" ")
+                    output.append("/")
+
                 else:
                     pass
 
